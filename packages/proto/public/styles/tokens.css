@@ -22,11 +22,14 @@
     --radius-m: .75rem;
     --shadow-1: 0 1px 2px hsl(220 40% 2% / .06), 0 6px 20px hsl(220 40% 2% / .06);
     --font-sans: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    --font-body: "Roboto Slab", Georgia, "Times New Roman", serif;
+    --font-heading: var(--font-sans);
     --size-1: .875rem;
     --size-2: 1rem;
     --size-3: 1.125rem;
     --size-4: 1.5rem;
     --size-5: 2rem;
+    --icon-large: 400px;
   }
   
 

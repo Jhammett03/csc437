@@ -1,7 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>Fyodor Dostoevsky</title>
+    <meta charset="utf-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/styles/tokens.css" />
     <link rel="stylesheet" href="/styles/page.css" />
   </head>
@@ -14,7 +18,12 @@
     </nav>
 
     <header class="container">
-      <h1>Fyodor Dostoevsky</h1>
+      <h1>
+        <svg class="icon">
+            <use href="/icons/books.svg#icon-author" />
+        </svg>
+        Fyodor Dostoevsky
+      </h1>
     </header>
 
     <main class="container">
@@ -26,7 +35,11 @@
         />
 
         <div class="author__content">
-          <h2>Primary Genre</h2>
+          <h2>Primary Genre
+            <svg class="icon">
+                <use href="/icons/books.svg#icon-law" />
+            </svg>
+          </h2>
           <p>Philosophical Fiction</p>
 
           <h2>Bio</h2>

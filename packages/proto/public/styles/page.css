@@ -4,10 +4,10 @@ html, body {
 }
 
 body {
+  font-family: var(--font-body);
   margin: 0;
   background: var(--surface-1);
   color: var(--text-1);
-  font-family: var(--font-sans);
   font-size: var(--size-2);
   line-height: 1.6;
 }
@@ -80,8 +80,6 @@ h2, h3 {
   margin: 0 0 var(--space-3);
 }
 
-
-
 img {
     display: block;
     width: fit-content;
@@ -89,4 +87,24 @@ img {
     box-shadow: var(--shadow-1);
     max-height: 500px;
   }
+
+lord-icon.book-icon-home {
+    display: flex;
+    height: var(--icon-large);
+    width: var(--icon-large);
+    justify-self:center;
+}
+
+svg.icon {
+    display: inline;
+    height: 2em;
+    width: 2em;
+    vertical-align: top;
+    /* fill: currentColor; */
+  }
+  
+
+.author__content {
+    margin-top: var(--space-3);
+}
 
