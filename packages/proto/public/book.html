@@ -1,18 +1,60 @@
 <!DOCTYPE html>
-<html> 
-    <a href="../index.html">HOME</a>
-    <!-- Title -->
-    <h1>Crime and Punishment</h1>
-    <img src="./media/crimeandpunishment.jpg" alt="Crime and Punishment Cover" />
-    <h3>Author: <a href="./author.html">Fyodor Dostoevsky</a></h2>
-    <h3>Genre: Philosophical Fiction</h3>
-    <h3>Reviews</h3>
-    <dl>
-        <dt>
-            <h5>Rating: 4/5</h5>
-            <h5>Reviewer: Joe</h5>
-            <h6>Sep 28 2025</h6>
-        </dt>
-        <dd><p>I liked this book!</p></dd>
-    </dl>
-</html>  
+<html>
+  <head>
+    <title>Crime and Punishment</title>
+    <link rel="stylesheet" href="/styles/tokens.css" />
+    <link rel="stylesheet" href="/styles/page.css" />
+  </head>
+
+  <body>
+    <nav class="navbar">
+      <a href="/index.html" class="back-link">← Home</a>
+      <a href="/session.html">Sessions</a>
+      <a href="/author.html">Author</a>
+    </nav>
+
+    <header class="container">
+      <h1>Crime and Punishment</h1>
+    </header>
+
+    <main class="container">
+      <section class="card">
+        <h2>Philosophical Fiction</h2>
+
+        <div class="book">
+          <a href="./author.html">
+            <img src="./media/crimeandpunishment.jpg"
+                 alt="Crime and Punishment cover" />
+          </a>
+
+          <dl class="info-list">
+            <div>
+              <dt>Author</dt>
+              <dd><a href="./author.html">Fyodor Dostoevsky</a></dd>
+            </div>
+            <div>
+              <dt>First Published</dt>
+              <dd>1866</dd>
+            </div>
+            <div>
+              <dt>Summary</dt>
+              <dd>A poor ex-student in St. Petersburg wrestles with morality after a desperate act.</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Reviews</h2>
+        <ol class="reviews">
+          <li class="review">
+            <header class="review__head">
+              <strong>Joe</strong>
+              <span class="review__meta">Sep 28, 2025 • <b>3.5</b></span>
+            </header>
+          </li>
+        </ol>
+      </section>
+    </main>
+  </body>
+</html>

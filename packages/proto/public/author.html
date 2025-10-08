@@ -1,17 +1,54 @@
 <!DOCTYPE html>
 <html>
-    <a href="../index.html">HOME</a>
-    <h1>Fyodor Dostoevsky</h1>
-    <img src="./media/Fyodor.jpeg" alt="Image of Fyodor Dostoevsky"/>
-    <h3>Primary Genre: Philosophical Fiction</h3>
-    <h3>Bio</h3>
-    <p>Fyodor Mikhailovich Dostoevsky was a Russian novelist, short story writer, essayist and journalist. He is regarded as one of the greatest novelists in both Russian and world literature, and many of his works are considered highly influential masterpieces.</p>
-    <h3>Titles</h3>
-    <ul>
-        <li><a href="./book.html">Crime and Punishment</a></li>
-        <li>The Brothers Karamazov</li>
-        <li>White Nights</li>
-        <li>Demons</li>
-        <li>The Gambler</li>
-    </ul>
+  <head>
+    <title>Fyodor Dostoevsky</title>
+    <link rel="stylesheet" href="/styles/tokens.css" />
+    <link rel="stylesheet" href="/styles/page.css" />
+  </head>
+
+  <body>
+    <nav class="navbar">
+      <a href="/index.html" class="back-link">← Home</a>
+      <a href="/book.html">Book</a>
+      <a href="/session.html">Sessions</a>
+    </nav>
+
+    <header class="container">
+      <h1>Fyodor Dostoevsky</h1>
+    </header>
+
+    <main class="container">
+      <section class="card author">
+        <img
+          class="author__photo"
+          src="./media/Fyodor.jpeg"
+          alt="Fyodor Dostoevsky"
+        />
+
+        <div class="author__content">
+          <h2>Primary Genre</h2>
+          <p>Philosophical Fiction</p>
+
+          <h2>Bio</h2>
+          <p>
+            Fyodor Mikhailovich Dostoevsky was a Russian novelist, short story
+            writer, essayist and journalist. He is regarded as one of the
+            greatest novelists in both Russian and world literature, and many of
+            his works are considered highly influential masterpieces.
+          </p>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Titles</h2>
+        <ul>
+          <li><a href="./book.html">Crime and Punishment</a></li>
+          <li>The Brothers Karamazov</li>
+          <li>White Nights</li>
+          <li>Demons</li>
+          <li>The Gambler</li>
+        </ul>
+      </section>
+    </main>
+  </body>
 </html>

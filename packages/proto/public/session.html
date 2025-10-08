@@ -1,19 +1,46 @@
 <!DOCTYPE html>
 <html>
-    <a href="../index.html">HOME</a>
-    <h1>Session 1</h1>
-    <h3>Sep 28 2025</h3>
-    <dl>
-        <dt>Book Title</dt>
-        <dd>
-            <a href="./book.html">Crime and Punishment</a>
-            <img src="./media/crimeandpunishment.jpg" alt="Crime and Punishment Book Cover" \>
-        </dd>
-        <dt>Duration</dt>
-        <dd>50 minutes</dd>
-        <dt>Pages</dt>
-        <dd>20</dd>
-        <dt>Notes</dt>
-        <dd>This is a sample note.</dd>
-    </dl>
+    <head>
+        <link rel="stylesheet" href="/styles/tokens.css" />
+        <link rel="stylesheet" href="/styles/page.css" />
+    </head>
+    <body>
+        <nav class="navbar">
+            <a href="/index.html" class="back-link">← Home</a>
+            <a href="/book.html">Book</a>
+            <a href="/author.html">Author</a>
+        </nav>
+
+        <header class="container">
+          <h1>Session 1</h1>
+        </header>
+    
+        <main class="container">
+          <section class="card">
+            <h2>Sep 28, 2025</h2>
+    
+            <div class="session">
+                <a href="./book.html">
+                    <img src="./media/crimeandpunishment.jpg"
+                        alt="Cover of Crime and Punishment" />
+                </a>
+    
+              <dl class="session__meta">
+                <div>
+                  <dt>Duration</dt>
+                  <dd>50 minutes</dd>
+                </div>
+                <div>
+                  <dt>Pages</dt>
+                  <dd>20</dd>
+                </div>
+                <div class="session__notes">
+                  <dt>Notes</dt>
+                  <dd>This is a sample note.</dd>
+                </div>
+              </dl>
+            </div>
+          </section>
+        </main>
+      </body>
 </html>
