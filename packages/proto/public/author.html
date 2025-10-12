@@ -3,65 +3,79 @@
   <head>
     <title>Fyodor Dostoevsky</title>
     <meta charset="utf-8" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles/reset.css" />
     <link rel="stylesheet" href="/styles/tokens.css" />
     <link rel="stylesheet" href="/styles/page.css" />
   </head>
 
   <body>
     <nav class="navbar">
-      <a href="/index.html" class="back-link">← Home</a>
-      <a href="/book.html">Book</a>
-      <a href="/session.html">Sessions</a>
+      <div class="navbar-content">
+        <div class="nav-brand">
+          <h2>BookStats</h2>
+        </div>
+        <div class="nav-links">
+          <a href="/index.html">Home</a>
+          <a href="/session.html">Sessions</a>
+          <a href="/book.html">Books</a>
+          <a href="/author.html" class="active">Authors</a>
+        </div>
+      </div>
     </nav>
 
     <header class="container">
       <h1>
         <svg class="icon">
-            <use href="/icons/books.svg#icon-author" />
+          <use href="/icons/books.svg#icon-author" />
         </svg>
         Fyodor Dostoevsky
       </h1>
     </header>
 
     <main class="container">
-      <section class="card author">
-        <img
-          class="author__photo"
-          src="./media/Fyodor.jpeg"
-          alt="Fyodor Dostoevsky"
-        />
-
-        <div class="author__content">
-          <h2>Primary Genre
-            <svg class="icon">
+      <section class="card author author-main">
+        <div class="author-layout">
+          <img
+            class="author__photo"
+            src="./media/Fyodor.jpeg"
+            alt="Fyodor Dostoevsky"
+          />
+          <div class="author__content">
+            <h2>
+              Primary Genre
+              <svg class="icon">
                 <use href="/icons/books.svg#icon-law" />
-            </svg>
-          </h2>
-          <p>Philosophical Fiction</p>
+              </svg>
+            </h2>
+            <p>Philosophical Fiction</p>
 
-          <h2>Bio</h2>
-          <p>
-            Fyodor Mikhailovich Dostoevsky was a Russian novelist, short story
-            writer, essayist and journalist. He is regarded as one of the
-            greatest novelists in both Russian and world literature, and many of
-            his works are considered highly influential masterpieces.
-          </p>
+            <h2>Bio</h2>
+            <p>
+              Fyodor Mikhailovich Dostoevsky was a Russian novelist, short story
+              writer, essayist and journalist. He is regarded as one of the
+              greatest novelists in both Russian and world literature, and many
+              of his works are considered highly influential masterpieces.
+            </p>
+          </div>
         </div>
       </section>
 
-      <section class="card">
-        <h2>Titles</h2>
-        <ul>
+      <aside class="card author-sidebar">
+        <h2>Published Works</h2>
+        <ul class="book-list">
           <li><a href="./book.html">Crime and Punishment</a></li>
           <li>The Brothers Karamazov</li>
           <li>White Nights</li>
           <li>Demons</li>
           <li>The Gambler</li>
         </ul>
-      </section>
+      </aside>
     </main>
   </body>
 </html>

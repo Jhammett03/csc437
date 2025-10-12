@@ -1,50 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="/styles/tokens.css" />
-        <link rel="stylesheet" href="/styles/page.css" />
-    </head>
-    <body>
-        <nav class="navbar">
-            <a href="/index.html" class="back-link">← Home</a>
-            <a href="/book.html">Book</a>
-            <a href="/author.html">Author</a>
-        </nav>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles/reset.css" />
+    <link rel="stylesheet" href="/styles/tokens.css" />
+    <link rel="stylesheet" href="/styles/page.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbar-content">
+        <div class="nav-brand">
+          <h2>BookStats</h2>
+        </div>
+        <div class="nav-links">
+          <a href="/index.html">Home</a>
+          <a href="/session.html" class="active">Sessions</a>
+          <a href="/book.html">Books</a>
+          <a href="/author.html">Authors</a>
+        </div>
+      </div>
+    </nav>
 
-        <header class="container">
-          <h1>Session 1</h1>
-        </header>
-    
-        <main class="container">
-          <section class="card">
-            <h2>Sep 28, 2025</h2>
-    
-            <div class="session">
-                <a href="./book.html">
-                    <img src="./media/crimeandpunishment.jpg"
-                        alt="Cover of Crime and Punishment" />
-                </a>
-    
-              <dl class="session__meta">
-                <div>
-                  <dt>Duration</dt>
-                  <dd>50 minutes</dd>
-                </div>
-                <div>
-                  <dt>Pages</dt>
-                  <dd>20</dd>
-                </div>
-                <div class="session__notes">
-                  <dt>Notes</dt>
-                  <dd>This is a sample note.</dd>
-                </div>
-              </dl>
+    <header class="container">
+      <h1>Session 1</h1>
+    </header>
+
+    <main class="container">
+      <section class="card session-main">
+        <h2>Sep 28, 2025</h2>
+
+        <div class="session-layout">
+          <a href="./book.html" class="session-book">
+            <img
+              src="./media/crimeandpunishment.jpg"
+              alt="Cover of Crime and Punishment"
+            />
+          </a>
+
+          <dl class="session-info">
+            <div>
+              <dt>Duration</dt>
+              <dd>50 minutes</dd>
             </div>
-          </section>
-        </main>
-      </body>
+            <div>
+              <dt>Pages Read</dt>
+              <dd>20 pages</dd>
+            </div>
+            <div>
+              <dt>Book</dt>
+              <dd><a href="./book.html">Crime and Punishment</a></dd>
+            </div>
+            <div class="session-notes">
+              <dt>Notes</dt>
+              <dd>
+                This is a sample note about the reading session. Fascinating
+                character development in this chapter.
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <aside class="card session-stats-card">
+        <h2>Session Stats</h2>
+        <div class="session-stats">
+          <div class="stat-item">
+            <span class="label">Total Sessions</span>
+            <span class="value">12</span>
+          </div>
+          <div class="stat-item">
+            <span class="label">Average Duration</span>
+            <span class="value">45min</span>
+          </div>
+          <div class="stat-item">
+            <span class="label">Pages/Session</span>
+            <span class="value">18</span>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </body>
 </html>

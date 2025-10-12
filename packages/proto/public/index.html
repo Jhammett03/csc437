@@ -1,35 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
-        <script src="https://cdn.lordicon.com/lordicon.js"></script>
-        <link rel="stylesheet" href="/styles/tokens.css" />
-        <link rel="stylesheet" href="/styles/page.css" />
-    </head>
-    <nav class="navbar">
-      <a href="/session.html">Sessions</a>
-      <a href="/book.html">Book</a>
-      <a href="/author.html">Author</a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BookStats - Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <link rel="stylesheet" href="/styles/reset.css" />
+    <link rel="stylesheet" href="/styles/tokens.css" />
+    <link rel="stylesheet" href="/styles/page.css" />
+  </head>
+  <nav class="navbar">
+    <div class="navbar-content">
+      <div class="nav-brand">
+        <h2>BookStats</h2>
+      </div>
+      <div class="nav-links">
+        <a href="/index.html">Home</a>
+        <a href="/session.html">Sessions</a>
+        <a href="/book.html">Books</a>
+        <a href="/author.html">Authors</a>
+      </div>
+    </div>
   </nav>
-    <header class="container">
-        <h1>BookStats</h1>
-      </header>
-      
-      <main class="container">
-        <section class="card">
-          <h2>Home</h2>
-          <p>Welcome back user!</p>
-        </section>
-        <lord-icon
-            class="book-icon-home"
-            src="https://cdn.lordicon.com/rrbmabsx.json"
-            trigger="morph"
-            state="morph-open"
-            colors="primary:#ffffff,secondary:#3c72dc">
-        </lord-icon>
-      </main>
-      
+  <header class="container">
+    <h1>Dashboard</h1>
+    <div class="header-meta">
+      <span>Welcome back, User!</span>
+    </div>
+  </header>
+
+  <main class="container dashboard-grid">
+    <section class="card dashboard-main">
+      <h2>Recent Reading Sessions</h2>
+      <p>Welcome back! Here's your recent activity.</p>
+      <div class="session-preview">
+        <h3>Latest Session</h3>
+        <p>Crime and Punishment - 50 minutes, 20 pages</p>
+        <p>Sep 28, 2025</p>
+      </div>
+    </section>
+    <aside class="card dashboard-sidebar">
+      <h2>Quick Stats</h2>
+      <dl class="stats">
+        <div>
+          <dt>Total Books</dt>
+          <dd>5</dd>
+        </div>
+        <div>
+          <dt>Hours Read</dt>
+          <dd>127</dd>
+        </div>
+        <div>
+          <dt>Current Book</dt>
+          <dd>Crime and Punishment</dd>
+        </div>
+      </dl>
+      <lord-icon
+        class="book-icon-home"
+        src="https://cdn.lordicon.com/rrbmabsx.json"
+        trigger="morph"
+        state="morph-open"
+        colors="primary:#ffffff,secondary:#3c72dc"
+      >
+      </lord-icon>
+    </aside>
+  </main>
 </html>
