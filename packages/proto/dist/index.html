@@ -3,17 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BookStats - Sessions</title>
+    <title>BookStats - Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/styles/reset.css" />
-    <link rel="stylesheet" href="/styles/tokens.css" />
-    <link rel="stylesheet" href="/styles/page.css" />
-    <script type="module" src="/src/session-register.ts"></script>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/page-Db4EjCwd.css">
   </head>
   <body>
     <nav class="navbar">
@@ -29,50 +27,53 @@
             Dark mode
           </label>
           <a href="/index.html">Home</a>
-          <a href="/session.html" class="active">Sessions</a>
+          <a href="/session.html">Sessions</a>
           <a href="/book.html">Books</a>
           <a href="/author.html">Authors</a>
         </div>
       </div>
     </nav>
-
     <header class="container">
-      <h1>Sessions</h1>
+      <h1>Dashboard</h1>
+      <div class="header-meta">
+        <span>Welcome back, User!</span>
+      </div>
     </header>
 
-    <main class="container">
-      <section class="card session-main">
-        <h2>Sep 28, 2025</h2>
-
-        <book-session
-          img-src="/assets/crimeandpunishment.jpg"
-          img-alt="Cover of Crime and Punishment"
-          book-href="/book.html"
-          book-name="Crime and Punishment"
-          duration="50 minutes"
-          pages="20 pages"
-        >
-          This is a sample note about the reading session. Fascinating character
-          development in this chapter.
-        </book-session>
-      </section>
-
-      <aside class="card session-stats-card">
-        <h2>Session Stats</h2>
-        <div class="session-stats">
-          <div class="stat-item">
-            <span class="label">Total Sessions</span>
-            <span class="value">12</span>
-          </div>
-          <div class="stat-item">
-            <span class="label">Average Duration</span>
-            <span class="value">45min</span>
-          </div>
-          <div class="stat-item">
-            <span class="label">Pages/Session</span>
-            <span class="value">18</span>
-          </div>
+    <main class="container dashboard-grid">
+      <section class="card dashboard-main">
+        <h2>Recent Reading Sessions</h2>
+        <p>Welcome back! Here's your recent activity.</p>
+        <div class="session-preview">
+          <h3>Latest Session</h3>
+          <p>Crime and Punishment - 50 minutes, 20 pages</p>
+          <p>Sep 28, 2025</p>
         </div>
+      </section>
+      <aside class="card dashboard-sidebar">
+        <h2>Quick Stats</h2>
+        <dl class="stats">
+          <div>
+            <dt>Total Books</dt>
+            <dd>5</dd>
+          </div>
+          <div>
+            <dt>Hours Read</dt>
+            <dd>127</dd>
+          </div>
+          <div>
+            <dt>Current Book</dt>
+            <dd>Crime and Punishment</dd>
+          </div>
+        </dl>
+        <lord-icon
+          class="book-icon-home"
+          src="https://cdn.lordicon.com/rrbmabsx.json"
+          trigger="morph"
+          state="morph-open"
+          colors="primary:#ffffff,secondary:#3c72dc"
+        >
+        </lord-icon>
       </aside>
     </main>
     <script>

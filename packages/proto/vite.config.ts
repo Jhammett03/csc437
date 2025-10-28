@@ -12,6 +12,14 @@ export default defineConfig({
     },
   },
   build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, "public/index.html"),
+        session: resolve(__dirname, "public/session.html"),
+        book: resolve(__dirname, "public/book.html"),
+        author: resolve(__dirname, "public/author.html"),
+      },
+    },
     outDir: "../dist",
     emptyOutDir: true,
   },
