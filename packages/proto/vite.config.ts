@@ -6,6 +6,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   root: "public",
+  publicDir: "public-assets",
   resolve: {
     alias: {
       "@": resolve(__dirname, "../src"),
