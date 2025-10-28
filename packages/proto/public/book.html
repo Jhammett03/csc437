@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Crime and Punishment</title>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BookStats - Crime and Punishment</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -21,6 +22,12 @@
           <h2>BookStats</h2>
         </div>
         <div class="nav-links">
+          <label
+            onchange="event.stopPropagation(); const isChecked = event.target.type === 'checkbox' ? event.target.checked : false; document.body.dispatchEvent(new CustomEvent('darkmode:toggle', { detail: { checked: isChecked } }));"
+          >
+            <input type="checkbox" autocomplete="off" />
+            Dark mode
+          </label>
           <a href="/index.html">Home</a>
           <a href="/session.html">Sessions</a>
           <a href="/book.html" class="active">Books</a>
@@ -106,5 +113,14 @@
         </ol>
       </section>
     </main>
+    <script>
+      document.body.addEventListener("darkmode:toggle", (event) => {
+        if (event.detail.checked) {
+          event.currentTarget.classList.add("dark-mode");
+        } else {
+          event.currentTarget.classList.remove("dark-mode");
+        }
+      });
+    </script>
   </body>
 </html>
