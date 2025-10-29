@@ -71,6 +71,11 @@ export class BookSessionElement extends LitElement {
         display: block;
         font-family: var(--font-body, serif);
         color: var(--text-1);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-m, 0.5rem);
+        padding: var(--space-4, 1rem);
+        margin-bottom: var(--space-4, 1rem);
+        background-color: var(--surface-3);
       }
 
       dl {

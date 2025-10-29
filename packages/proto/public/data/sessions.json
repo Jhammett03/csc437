@@ -1,0 +1,22 @@
+[
+  {
+    "img-src": "/crimeandpunishment.jpg",
+    "img-alt": "Cover of Crime and Punishment",
+    "book-href": "/book.html",
+    "book-name": "Crime and Punishment",
+    "duration": "50 minutes",
+    "pages": "20 pages",
+    "notes": "This is a sample note about the reading session. Fascinating character development in this chapter.",
+    "date": "Sep 28, 2025"
+  },
+  {
+    "img-src": "/crimeandpunishment.jpg",
+    "img-alt": "Cover of Crime and Punishment",
+    "book-href": "/book.html",
+    "book-name": "Crime and Punishment",
+    "duration": "35 minutes",
+    "pages": "14 pages",
+    "notes": "testing adding multiple sessions",
+    "date": "Oct 1, 2025"
+  }
+]
