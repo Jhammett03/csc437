@@ -35,16 +35,22 @@ export class BookSessionElement extends LitElement {
         <dl class="session-info">
           <div>
             <dt>Duration</dt>
-            <dd>${this.duration || ""}</dd>
+            <dd>
+              <slot name="duration">${this.duration || ""}</slot>
+            </dd>
           </div>
           <div>
             <dt>Pages Read</dt>
-            <dd>${this.pages || ""}</dd>
+            <dd>
+              <slot name="pages">${this.pages || ""}</slot>
+            </dd>
           </div>
           <div>
             <dt>Book</dt>
             <dd>
-              <a href="${this.bookHref || "#"}">${this.bookName || ""}</a>
+              <a href="${this.bookHref || "#"}">
+                <slot name="book-name">${this.bookName || ""}</slot>
+              </a>
             </dd>
           </div>
           <div class="session-notes">
