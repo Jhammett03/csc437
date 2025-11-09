@@ -1,4 +1,7 @@
+import { Types } from "mongoose";
+
 export interface SessionData {
+  _id?: Types.ObjectId;
   "img-src": string;
   "img-alt": string;
   "book-href": string;

@@ -23,34 +23,17 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 ));
 var import_express = __toESM(require("express"));
 var import_mongo = require("./services/mongo");
-var import_session_svc = __toESM(require("./services/session-svc"));
+var import_sessions = __toESM(require("./routes/sessions"));
 (0, import_mongo.connect)("BookStats");
 const app = (0, import_express.default)();
 const port = process.env.PORT || 3e3;
 const staticDir = process.env.STATIC || "public";
 app.use(import_express.default.static(staticDir));
+app.use(import_express.default.json());
 app.get("/hello", (req, res) => {
   res.send("Hello, World");
 });
+app.use("/api/sessions", import_sessions.default);
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
-});
-app.get("/sessions", (req, res) => {
-  import_session_svc.default.index().then((data) => {
-    res.set("Content-Type", "application/json").send(JSON.stringify(data));
-  }).catch((err) => {
-    console.error("Error fetching sessions:", err);
-    res.status(500).send(JSON.stringify({ error: "Failed to fetch sessions" }));
-  });
-});
-app.get("/sessions/:userid", (req, res) => {
-  const userid = req.params.userid;
-  import_session_svc.default.get(userid).then((data) => {
-    if (data)
-      res.set("Content-Type", "application/json").send(JSON.stringify(data));
-    else res.status(404).send();
-  }).catch((err) => {
-    console.error("Error fetching session:", err);
-    res.status(404).send(JSON.stringify({ error: `${userid} not found` }));
-  });
 });
