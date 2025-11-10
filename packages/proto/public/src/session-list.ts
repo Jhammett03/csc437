@@ -1,5 +1,6 @@
 import { html, LitElement } from "lit";
 import { property, state } from "lit/decorators.js";
+import { Observer, Auth } from "@calpoly/mustang";
 
 interface SessionData {
   "img-src": string;
@@ -19,8 +20,28 @@ export class SessionListElement extends LitElement {
   @state()
   private sessions: SessionData[] = [];
 
+  _authObserver = new Observer<Auth.Model>(this, "bookstats:auth");
+  _user?: Auth.User;
+
+  get authorization() {
+    return this._user?.authenticated
+      ? {
+          Authorization: `Bearer ${
+            (this._user as Auth.AuthenticatedUser).token
+          }`,
+        }
+      : undefined;
+  }
+
   override connectedCallback() {
     super.connectedCallback();
+    this._authObserver.observe((auth: Auth.Model) => {
+      this._user = auth.user;
+      // Re-fetch data when auth state changes
+      if (this.src) {
+        this.hydrate(this.src);
+      }
+    });
     if (this.src) {
       this.hydrate(this.src);
     }
@@ -34,7 +55,7 @@ export class SessionListElement extends LitElement {
   }
 
   private hydrate(src: string) {
-    fetch(src)
+    fetch(src, { headers: this.authorization })
       .then((res) => res.json())
       .then((json: object) => {
         if (json) {

@@ -13,114 +13,109 @@
     <link rel="stylesheet" href="/styles/reset.css" />
     <link rel="stylesheet" href="/styles/tokens.css" />
     <link rel="stylesheet" href="/styles/page.css" />
+    <script type="module">
+      import { define, Auth } from "@calpoly/mustang";
+      import { HeaderElement } from "/src/header";
+
+      define({
+        "bookstats-header": HeaderElement,
+        "mu-auth": Auth.Provider,
+      });
+
+      HeaderElement.initializeOnce();
+    </script>
   </head>
 
   <body>
-    <nav class="navbar">
-      <div class="navbar-content">
-        <div class="nav-brand">
-          <h2>BookStats</h2>
-        </div>
-        <div class="nav-links">
-          <label
-            onchange="event.stopPropagation(); const isChecked = event.target.type === 'checkbox' ? event.target.checked : false; document.body.dispatchEvent(new CustomEvent('darkmode:toggle', { detail: { checked: isChecked } }));"
-          >
-            <input type="checkbox" autocomplete="off" />
-            Dark mode
-          </label>
-          <a href="/index.html">Home</a>
-          <a href="/session.html">Sessions</a>
-          <a href="/book.html" class="active">Books</a>
-          <a href="/author.html">Authors</a>
-        </div>
-      </div>
-    </nav>
+    <mu-auth provides="bookstats:auth">
+      <bookstats-header></bookstats-header>
 
-    <header class="container">
-      <h1>Crime and Punishment</h1>
-    </header>
+      <header class="container">
+        <h1>Crime and Punishment</h1>
+      </header>
 
-    <main class="container">
-      <section class="card book-main">
-        <h2>
-          Philosophical Fiction
-          <svg class="icon">
-            <use href="/icons/books.svg#icon-law" />
-          </svg>
-        </h2>
+      <main class="container">
+        <section class="card book-main">
+          <h2>
+            Philosophical Fiction
+            <svg class="icon">
+              <use href="/icons/books.svg#icon-law" />
+            </svg>
+          </h2>
 
-        <div class="book-layout">
-          <a href="/author.html" class="book-cover">
-            <img
-              src="/crimeandpunishment.jpg"
-              alt="Crime and Punishment cover"
-            />
-          </a>
+          <div class="book-layout">
+            <a href="/author.html" class="book-cover">
+              <img
+                src="/crimeandpunishment.jpg"
+                alt="Crime and Punishment cover"
+              />
+            </a>
 
-          <dl class="book-info">
-            <div>
-              <dt>Author</dt>
-              <dd><a href="/author.html">Fyodor Dostoevsky</a></dd>
-            </div>
-            <div>
-              <dt>First Published</dt>
-              <dd>1866</dd>
-            </div>
-            <div>
-              <dt>Summary</dt>
-              <dd>
-                A poor ex-student in St. Petersburg wrestles with morality after
-                a desperate act.
-              </dd>
-            </div>
-          </dl>
-        </div>
-      </section>
-
-      <aside class="card book-progress">
-        <h2>Reading Progress</h2>
-        <div class="progress-stats">
-          <div class="progress-item">
-            <span class="label">Progress</span>
-            <span class="value">45%</span>
+            <dl class="book-info">
+              <div>
+                <dt>Author</dt>
+                <dd><a href="/author.html">Fyodor Dostoevsky</a></dd>
+              </div>
+              <div>
+                <dt>First Published</dt>
+                <dd>1866</dd>
+              </div>
+              <div>
+                <dt>Summary</dt>
+                <dd>
+                  A poor ex-student in St. Petersburg wrestles with morality
+                  after a desperate act.
+                </dd>
+              </div>
+            </dl>
           </div>
-          <div class="progress-item">
-            <span class="label">Pages Read</span>
-            <span class="value">234/520</span>
-          </div>
-          <div class="progress-item">
-            <span class="label">Reading Sessions</span>
-            <span class="value">12</span>
-          </div>
-        </div>
-      </aside>
+        </section>
 
-      <section class="card book-reviews">
-        <h2>Reviews & Notes</h2>
-        <ol class="reviews">
-          <li class="review">
-            <header class="review-header">
-              <strong>Joe</strong>
-              <span class="review-meta"
-                >Sep 28, 2025 • Rating: <strong>3.5/5</strong></span
-              >
-            </header>
-            <p>
-              Fascinating exploration of guilt and morality. Dostoevsky's
-              psychological depth is unmatched.
-            </p>
-          </li>
-        </ol>
-      </section>
-    </main>
-    <script>
-      document.body.addEventListener("darkmode:toggle", (event) => {
-        if (event.detail.checked) {
-          event.currentTarget.classList.add("dark-mode");
-        } else {
-          event.currentTarget.classList.remove("dark-mode");
-        }
-      });
-    </script>
+        <aside class="card book-progress">
+          <h2>Reading Progress</h2>
+          <div class="progress-stats">
+            <div class="progress-item">
+              <span class="label">Progress</span>
+              <span class="value">45%</span>
+            </div>
+            <div class="progress-item">
+              <span class="label">Pages Read</span>
+              <span class="value">234/520</span>
+            </div>
+            <div class="progress-item">
+              <span class="label">Reading Sessions</span>
+              <span class="value">12</span>
+            </div>
+          </div>
+        </aside>
+
+        <section class="card book-reviews">
+          <h2>Reviews & Notes</h2>
+          <ol class="reviews">
+            <li class="review">
+              <header class="review-header">
+                <strong>Joe</strong>
+                <span class="review-meta"
+                  >Sep 28, 2025 • Rating: <strong>3.5/5</strong></span
+                >
+              </header>
+              <p>
+                Fascinating exploration of guilt and morality. Dostoevsky's
+                psychological depth is unmatched.
+              </p>
+            </li>
+          </ol>
+        </section>
+      </main>
+      <script>
+        document.body.addEventListener("darkmode:toggle", (event) => {
+          if (event.detail.checked) {
+            event.currentTarget.classList.add("dark-mode");
+          } else {
+            event.currentTarget.classList.remove("dark-mode");
+          }
+        });
+      </script>
+    </mu-auth>
   </body>
 </html>

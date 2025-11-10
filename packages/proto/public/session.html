@@ -14,65 +14,60 @@
     <link rel="stylesheet" href="/styles/tokens.css" />
     <link rel="stylesheet" href="/styles/page.css" />
     <script type="module" src="/src/session-register.ts"></script>
+    <script type="module">
+      import { define, Auth } from "@calpoly/mustang";
+      import { HeaderElement } from "/src/header";
+
+      define({
+        "bookstats-header": HeaderElement,
+        "mu-auth": Auth.Provider,
+      });
+
+      HeaderElement.initializeOnce();
+    </script>
   </head>
   <body>
-    <nav class="navbar">
-      <div class="navbar-content">
-        <div class="nav-brand">
-          <h2>BookStats</h2>
-        </div>
-        <div class="nav-links">
-          <label
-            onchange="event.stopPropagation(); const isChecked = event.target.type === 'checkbox' ? event.target.checked : false; document.body.dispatchEvent(new CustomEvent('darkmode:toggle', { detail: { checked: isChecked } }));"
-          >
-            <input type="checkbox" autocomplete="off" />
-            Dark mode
-          </label>
-          <a href="/index.html">Home</a>
-          <a href="/session.html" class="active">Sessions</a>
-          <a href="/book.html">Books</a>
-          <a href="/author.html">Authors</a>
-        </div>
-      </div>
-    </nav>
+    <mu-auth provides="bookstats:auth">
+      <bookstats-header></bookstats-header>
 
-    <header class="container">
-      <h1>Sessions</h1>
-    </header>
+      <header class="container">
+        <h1>Sessions</h1>
+      </header>
 
-    <main class="container">
-      <section class="card session-main">
-        <session-list src="/api/sessions">
-          <!-- wrapper component -->
-        </session-list>
-      </section>
+      <main class="container">
+        <section class="card session-main">
+          <session-list src="/api/sessions">
+            <!-- wrapper component -->
+          </session-list>
+        </section>
 
-      <aside class="card session-stats-card">
-        <h2>Session Stats</h2>
-        <div class="session-stats">
-          <div class="stat-item">
-            <span class="label">Total Sessions</span>
-            <span class="value">12</span>
+        <aside class="card session-stats-card">
+          <h2>Session Stats</h2>
+          <div class="session-stats">
+            <div class="stat-item">
+              <span class="label">Total Sessions</span>
+              <span class="value">12</span>
+            </div>
+            <div class="stat-item">
+              <span class="label">Average Duration</span>
+              <span class="value">45min</span>
+            </div>
+            <div class="stat-item">
+              <span class="label">Pages/Session</span>
+              <span class="value">18</span>
+            </div>
           </div>
-          <div class="stat-item">
-            <span class="label">Average Duration</span>
-            <span class="value">45min</span>
-          </div>
-          <div class="stat-item">
-            <span class="label">Pages/Session</span>
-            <span class="value">18</span>
-          </div>
-        </div>
-      </aside>
-    </main>
-    <script>
-      document.body.addEventListener("darkmode:toggle", (event) => {
-        if (event.detail.checked) {
-          event.currentTarget.classList.add("dark-mode");
-        } else {
-          event.currentTarget.classList.remove("dark-mode");
-        }
-      });
-    </script>
+        </aside>
+      </main>
+      <script>
+        document.body.addEventListener("darkmode:toggle", (event) => {
+          if (event.detail.checked) {
+            event.currentTarget.classList.add("dark-mode");
+          } else {
+            event.currentTarget.classList.remove("dark-mode");
+          }
+        });
+      </script>
+    </mu-auth>
   </body>
 </html>

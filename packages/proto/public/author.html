@@ -13,85 +13,81 @@
     <link rel="stylesheet" href="/styles/reset.css" />
     <link rel="stylesheet" href="/styles/tokens.css" />
     <link rel="stylesheet" href="/styles/page.css" />
+    <script type="module">
+      import { define, Auth } from "@calpoly/mustang";
+      import { HeaderElement } from "/src/header";
+
+      define({
+        "bookstats-header": HeaderElement,
+        "mu-auth": Auth.Provider,
+      });
+
+      HeaderElement.initializeOnce();
+    </script>
   </head>
 
   <body>
-    <nav class="navbar">
-      <div class="navbar-content">
-        <div class="nav-brand">
-          <h2>BookStats</h2>
-        </div>
-        <div class="nav-links">
-          <label
-            onchange="event.stopPropagation(); const isChecked = event.target.type === 'checkbox' ? event.target.checked : false; document.body.dispatchEvent(new CustomEvent('darkmode:toggle', { detail: { checked: isChecked } }));"
-          >
-            <input type="checkbox" autocomplete="off" />
-            Dark mode
-          </label>
-          <a href="/index.html">Home</a>
-          <a href="/session.html">Sessions</a>
-          <a href="/book.html">Books</a>
-          <a href="/author.html" class="active">Authors</a>
-        </div>
-      </div>
-    </nav>
+    <mu-auth provides="bookstats:auth">
+      <bookstats-header></bookstats-header>
 
-    <header class="container">
-      <h1>
-        <svg class="icon">
-          <use href="/icons/books.svg#icon-author" />
-        </svg>
-        Fyodor Dostoevsky
-      </h1>
-    </header>
+      <header class="container">
+        <h1>
+          <svg class="icon">
+            <use href="/icons/books.svg#icon-author" />
+          </svg>
+          Fyodor Dostoevsky
+        </h1>
+      </header>
 
-    <main class="container">
-      <section class="card author author-main">
-        <div class="author-layout">
-          <img
-            class="author__photo"
-            src="/Fyodor.jpeg"
-            alt="Fyodor Dostoevsky"
-          />
-          <div class="author__content">
-            <h2>
-              Primary Genre
-              <svg class="icon">
-                <use href="/icons/books.svg#icon-law" />
-              </svg>
-            </h2>
-            <p>Philosophical Fiction</p>
+      <main class="container">
+        <section class="card author author-main">
+          <div class="author-layout">
+            <img
+              class="author__photo"
+              src="/Fyodor.jpeg"
+              alt="Fyodor Dostoevsky"
+            />
+            <div class="author__content">
+              <h2>
+                Primary Genre
+                <svg class="icon">
+                  <use href="/icons/books.svg#icon-law" />
+                </svg>
+              </h2>
+              <p>Philosophical Fiction</p>
 
-            <h2>Bio</h2>
-            <p>
-              Fyodor Mikhailovich Dostoevsky was a Russian novelist, short story
-              writer, essayist and journalist. He is regarded as one of the
-              greatest novelists in both Russian and world literature, and many
-              of his works are considered highly influential masterpieces.
-            </p>
+              <h2>Bio</h2>
+              <p>
+                Fyodor Mikhailovich Dostoevsky was a Russian novelist, short
+                story writer, essayist and journalist. He is regarded as one of
+                the greatest novelists in both Russian and world literature, and
+                many of his works are considered highly influential
+                masterpieces.
+              </p>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <aside class="card author-sidebar">
-        <h2>Published Works</h2>
-        <ul class="book-list">
-          <li><a href="/book.html">Crime and Punishment</a></li>
-          <li>The Brothers Karamazov</li>
-          <li>White Nights</li>
-          <li>Demons</li>
-          <li>The Gambler</li>
-        </ul>
-      </aside>
-    </main>
-    <script>
-      document.body.addEventListener("darkmode:toggle", (event) => {
-        if (event.detail.checked) {
-          event.currentTarget.classList.add("dark-mode");
-        } else {
-          event.currentTarget.classList.remove("dark-mode");
-        }
-      });
-    </script>
+        <aside class="card author-sidebar">
+          <h2>Published Works</h2>
+          <ul class="book-list">
+            <li><a href="/book.html">Crime and Punishment</a></li>
+            <li>The Brothers Karamazov</li>
+            <li>White Nights</li>
+            <li>Demons</li>
+            <li>The Gambler</li>
+          </ul>
+        </aside>
+      </main>
+      <script>
+        document.body.addEventListener("darkmode:toggle", (event) => {
+          if (event.detail.checked) {
+            event.currentTarget.classList.add("dark-mode");
+          } else {
+            event.currentTarget.classList.remove("dark-mode");
+          }
+        });
+      </script>
+    </mu-auth>
   </body>
 </html>

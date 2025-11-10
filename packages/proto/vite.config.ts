@@ -19,6 +19,7 @@ export default defineConfig({
         session: resolve(__dirname, "public/session.html"),
         book: resolve(__dirname, "public/book.html"),
         author: resolve(__dirname, "public/author.html"),
+        login: resolve(__dirname, "public/login.html"),
       },
     },
     outDir: "../dist",

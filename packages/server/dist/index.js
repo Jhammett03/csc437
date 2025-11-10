@@ -22,18 +22,24 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var import_express = __toESM(require("express"));
+var import_path = __toESM(require("path"));
 var import_mongo = require("./services/mongo");
 var import_sessions = __toESM(require("./routes/sessions"));
+var import_auth = __toESM(require("./routes/auth"));
 (0, import_mongo.connect)("BookStats");
 const app = (0, import_express.default)();
 const port = process.env.PORT || 3e3;
 const staticDir = process.env.STATIC || "public";
 app.use(import_express.default.static(staticDir));
 app.use(import_express.default.json());
+app.use("/auth", import_auth.default);
 app.get("/hello", (req, res) => {
   res.send("Hello, World");
 });
-app.use("/api/sessions", import_sessions.default);
+app.get("/login", (req, res) => {
+  res.sendFile(import_path.default.resolve(staticDir, "login.html"));
+});
+app.use("/api/sessions", import_auth.authenticateUser, import_sessions.default);
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });

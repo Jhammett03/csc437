@@ -14,78 +14,73 @@
     <link rel="stylesheet" href="/styles/reset.css" />
     <link rel="stylesheet" href="/styles/tokens.css" />
     <link rel="stylesheet" href="/styles/page.css" />
+    <script type="module">
+      import { define, Auth } from "@calpoly/mustang";
+      import { HeaderElement } from "/src/header";
+
+      define({
+        "bookstats-header": HeaderElement,
+        "mu-auth": Auth.Provider,
+      });
+
+      HeaderElement.initializeOnce();
+    </script>
   </head>
   <body>
-    <nav class="navbar">
-      <div class="navbar-content">
-        <div class="nav-brand">
-          <h2>BookStats</h2>
+    <mu-auth provides="bookstats:auth">
+      <bookstats-header></bookstats-header>
+      <header class="container">
+        <h1>Dashboard</h1>
+        <div class="header-meta">
+          <span>Welcome back, User!</span>
         </div>
-        <div class="nav-links">
-          <label
-            onchange="event.stopPropagation(); const isChecked = event.target.type === 'checkbox' ? event.target.checked : false; document.body.dispatchEvent(new CustomEvent('darkmode:toggle', { detail: { checked: isChecked } }));"
-          >
-            <input type="checkbox" autocomplete="off" />
-            Dark mode
-          </label>
-          <a href="/index.html">Home</a>
-          <a href="/session.html">Sessions</a>
-          <a href="/book.html">Books</a>
-          <a href="/author.html">Authors</a>
-        </div>
-      </div>
-    </nav>
-    <header class="container">
-      <h1>Dashboard</h1>
-      <div class="header-meta">
-        <span>Welcome back, User!</span>
-      </div>
-    </header>
+      </header>
 
-    <main class="container dashboard-grid">
-      <section class="card dashboard-main">
-        <h2>Recent Reading Sessions</h2>
-        <p>Welcome back! Here's your recent activity.</p>
-        <div class="session-preview">
-          <h3>Latest Session</h3>
-          <p>Crime and Punishment - 50 minutes, 20 pages</p>
-          <p>Sep 28, 2025</p>
-        </div>
-      </section>
-      <aside class="card dashboard-sidebar">
-        <h2>Quick Stats</h2>
-        <dl class="stats">
-          <div>
-            <dt>Total Books</dt>
-            <dd>5</dd>
+      <main class="container dashboard-grid">
+        <section class="card dashboard-main">
+          <h2>Recent Reading Sessions</h2>
+          <p>Welcome back! Here's your recent activity.</p>
+          <div class="session-preview">
+            <h3>Latest Session</h3>
+            <p>Crime and Punishment - 50 minutes, 20 pages</p>
+            <p>Sep 28, 2025</p>
           </div>
-          <div>
-            <dt>Hours Read</dt>
-            <dd>127</dd>
-          </div>
-          <div>
-            <dt>Current Book</dt>
-            <dd>Crime and Punishment</dd>
-          </div>
-        </dl>
-        <lord-icon
-          class="book-icon-home"
-          src="https://cdn.lordicon.com/rrbmabsx.json"
-          trigger="morph"
-          state="morph-open"
-          colors="primary:#ffffff,secondary:#3c72dc"
-        >
-        </lord-icon>
-      </aside>
-    </main>
-    <script>
-      document.body.addEventListener("darkmode:toggle", (event) => {
-        if (event.detail.checked) {
-          event.currentTarget.classList.add("dark-mode");
-        } else {
-          event.currentTarget.classList.remove("dark-mode");
-        }
-      });
-    </script>
+        </section>
+        <aside class="card dashboard-sidebar">
+          <h2>Quick Stats</h2>
+          <dl class="stats">
+            <div>
+              <dt>Total Books</dt>
+              <dd>5</dd>
+            </div>
+            <div>
+              <dt>Hours Read</dt>
+              <dd>127</dd>
+            </div>
+            <div>
+              <dt>Current Book</dt>
+              <dd>Crime and Punishment</dd>
+            </div>
+          </dl>
+          <lord-icon
+            class="book-icon-home"
+            src="https://cdn.lordicon.com/rrbmabsx.json"
+            trigger="morph"
+            state="morph-open"
+            colors="primary:#ffffff,secondary:#3c72dc"
+          >
+          </lord-icon>
+        </aside>
+      </main>
+      <script>
+        document.body.addEventListener("darkmode:toggle", (event) => {
+          if (event.detail.checked) {
+            event.currentTarget.classList.add("dark-mode");
+          } else {
+            event.currentTarget.classList.remove("dark-mode");
+          }
+        });
+      </script>
+    </mu-auth>
   </body>
 </html>
