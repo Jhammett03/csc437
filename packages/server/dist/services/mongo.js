@@ -35,16 +35,35 @@ var import_mongoose = __toESM(require("mongoose"));
 var import_dotenv = __toESM(require("dotenv"));
 import_dotenv.default.config();
 function getMongoURI(dbname) {
-  let connection_string = `mongodb://localhost:27017/${dbname}`;
   const { MONGO_USER, MONGO_PWD, MONGO_CLUSTER } = process.env;
   if (MONGO_USER && MONGO_PWD && MONGO_CLUSTER) {
-    connection_string = `mongodb+srv://${MONGO_USER}:${MONGO_PWD}@${MONGO_CLUSTER}/${dbname}?retryWrites=true&w=majority`;
+    return `mongodb+srv://${MONGO_USER}:${MONGO_PWD}@${MONGO_CLUSTER}/${dbname}?retryWrites=true&w=majority`;
   }
-  return connection_string;
+  return `mongodb://localhost:27017/${dbname}`;
 }
 function connect(dbname) {
-  import_mongoose.default.connect(getMongoURI(dbname)).catch((error) => {
-    console.error("MongoDB connection error:", error);
+  const { MONGO_USER, MONGO_PWD, MONGO_CLUSTER } = process.env;
+  console.log("MongoDB env check:", {
+    hasUser: !!MONGO_USER,
+    hasPwd: !!MONGO_PWD,
+    hasCluster: !!MONGO_CLUSTER,
+    cluster: MONGO_CLUSTER
+  });
+  const uri = getMongoURI(dbname);
+  console.log(
+    `Connecting to MongoDB... (${uri.includes("@") ? "Atlas" : uri.includes("localhost") ? "localhost" : "custom"})`
+  );
+  import_mongoose.default.connect(uri).catch((error) => {
+    console.error("MongoDB connection error:", error.message);
+    console.error(
+      "Please ensure MongoDB is running or configure MONGO_USER, MONGO_PWD, and MONGO_CLUSTER environment variables"
+    );
+  });
+  import_mongoose.default.connection.on("connected", () => {
+    console.log("MongoDB connected successfully");
+  });
+  import_mongoose.default.connection.on("error", (err) => {
+    console.error("MongoDB connection error:", err);
   });
 }
 // Annotate the CommonJS export names for ESM import in node:

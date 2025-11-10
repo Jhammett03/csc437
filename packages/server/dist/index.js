@@ -30,16 +30,16 @@ var import_auth = __toESM(require("./routes/auth"));
 const app = (0, import_express.default)();
 const port = process.env.PORT || 3e3;
 const staticDir = process.env.STATIC || "public";
-app.use(import_express.default.static(staticDir));
 app.use(import_express.default.json());
 app.use("/auth", import_auth.default);
+app.use("/api/sessions", import_auth.authenticateUser, import_sessions.default);
 app.get("/hello", (req, res) => {
   res.send("Hello, World");
 });
 app.get("/login", (req, res) => {
   res.sendFile(import_path.default.resolve(staticDir, "login.html"));
 });
-app.use("/api/sessions", import_auth.authenticateUser, import_sessions.default);
+app.use(import_express.default.static(staticDir));
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
