@@ -4,8 +4,7 @@
     "ext": "ts,mjs,js,json,graphql",
     "exec": "npx etsc && node ./dist/index.js",
     "env": {
-      "DEBUG": "express/*",
-      "STATIC": "../proto/dist"
+      "NODE_ENV": "development"
     },
     "legacyWatch": true
   }

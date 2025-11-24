@@ -26,7 +26,7 @@ var import_path = __toESM(require("path"));
 var import_mongo = require("./services/mongo");
 var import_sessions = __toESM(require("./routes/sessions"));
 var import_auth = __toESM(require("./routes/auth"));
-(0, import_mongo.connect)("BookStats");
+(0, import_mongo.connect)("test");
 const app = (0, import_express.default)();
 const port = process.env.PORT || 3e3;
 const staticDir = process.env.STATIC || "public";

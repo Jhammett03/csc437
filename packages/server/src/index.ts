@@ -4,7 +4,7 @@ import { connect } from "./services/mongo";
 import Sessions from "./routes/sessions";
 import auth, { authenticateUser } from "./routes/auth";
 
-connect("BookStats");
+connect("test");
 
 const app = express();
 const port = process.env.PORT || 3000;
