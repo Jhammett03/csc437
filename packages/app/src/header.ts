@@ -11,10 +11,6 @@ export class HeaderElement extends LitElement {
   @state()
   userid?: string;
 
-  static initializeOnce() {
-    // Optional initialization hook
-  }
-
   override connectedCallback() {
     super.connectedCallback();
 
