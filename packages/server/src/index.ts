@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import path from "path";
+import fs from "node:fs/promises";
 import { connect } from "./services/mongo";
 import Sessions from "./routes/sessions";
 import auth, { authenticateUser } from "./routes/auth";
@@ -26,6 +27,14 @@ app.get("/login", (req: Request, res: Response) => {
 
 // Static file serving should be last
 app.use(express.static(staticDir));
+
+// SPA Routes: /app/...
+app.use("/app", (req: Request, res: Response) => {
+  const indexHtml = path.resolve(staticDir, "index.html");
+  fs.readFile(indexHtml, { encoding: "utf8" }).then((html) =>
+    res.send(html)
+  );
+});
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

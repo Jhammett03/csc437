@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BookStats</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <link rel="stylesheet" href="/styles/reset.css" />
+    <link rel="stylesheet" href="/styles/tokens.css" />
+    <link rel="stylesheet" href="/styles/page.css" />
+    <script type="module" src="/src/main.ts"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        document.body.addEventListener("darkmode:toggle", (event) => {
+          if (event.detail.checked) {
+            document.body.classList.add("dark-mode");
+          } else {
+            document.body.classList.remove("dark-mode");
+          }
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <mu-history provides="bookstats:history">
+      <mu-auth provides="bookstats:auth" redirect="/login">
+        <article class="page">
+          <bookstats-header></bookstats-header>
+          <mu-switch></mu-switch>
+        </article>
+      </mu-auth>
+    </mu-history>
+  </body>
+</html>
