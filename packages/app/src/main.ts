@@ -1,5 +1,8 @@
-import { define, Auth, History, Switch } from "@calpoly/mustang";
+import { define, Auth, History, Switch, Store } from "@calpoly/mustang";
 import { html } from "lit";
+import { Msg } from "./messages";
+import { Model, init } from "./model";
+import update from "./update";
 import { HeaderElement } from "./header";
 import { HomeViewElement } from "./views/home-view";
 import { SessionsViewElement } from "./views/sessions-view";
@@ -85,11 +88,14 @@ define({
   "login-form": LoginFormElement,
   "mu-auth": Auth.Provider,
   "mu-history": History.Provider,
+  "mu-store": class AppStore extends Store.Provider<Model, Msg> {
+    constructor() {
+      super(update, init, "bookstats:auth")
+    }
+  },
   "mu-switch": class AppSwitch extends Switch.Element {
     constructor() {
       super(routes, "bookstats:history", "bookstats:auth");
     }
   }
 });
-
-HeaderElement.initializeOnce();

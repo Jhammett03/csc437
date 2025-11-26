@@ -30,10 +30,12 @@
   <body>
     <mu-history provides="bookstats:history">
       <mu-auth provides="bookstats:auth" redirect="/login">
+        <mu-store provides="bookstats:model">
         <article class="page">
           <bookstats-header></bookstats-header>
           <mu-switch></mu-switch>
         </article>
+      </mu-store>
       </mu-auth>
     </mu-history>
   </body>

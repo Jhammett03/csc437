@@ -1,79 +1,20 @@
 import { html, LitElement } from "lit";
-import { property, state } from "lit/decorators.js";
-import { Observer, Auth } from "@calpoly/mustang";
-
-interface SessionData {
-  _id: string;
-  "img-src": string;
-  "img-alt": string;
-  "book-href": string;
-  "book-name": string;
-  duration: string;
-  pages: string;
-  notes?: string;
-  date?: string;
-}
+import { state } from "lit/decorators.js";
+import { Observer } from "@calpoly/mustang";
+import { Model, Session } from "./model";
 
 export class SessionListElement extends LitElement {
-  @property({ type: String })
-  src?: string;
-
   @state()
-  private sessions: SessionData[] = [];
+  private sessions: Session[] = [];
 
-  _authObserver = new Observer<Auth.Model>(this, "bookstats:auth");
-  _user?: Auth.User;
-
-  get authorization() {
-    return this._user?.authenticated
-      ? {
-          Authorization: `Bearer ${
-            (this._user as Auth.AuthenticatedUser).token
-          }`,
-        }
-      : undefined;
-  }
+  _storeObserver = new Observer<Model>(this, "bookstats:model");
 
   override connectedCallback() {
     super.connectedCallback();
-    this._authObserver.observe((auth: Auth.Model) => {
-      this._user = auth.user;
-      // Re-fetch data when auth state changes
-      if (this.src) {
-        this.hydrate(this.src);
-      }
+
+    this._storeObserver.observe((model: Model) => {
+      this.sessions = model.sessions;
     });
-    if (this.src) {
-      this.hydrate(this.src);
-    }
-
-    // Listen for session-deleted events
-    this.addEventListener("session-deleted", () => {
-      if (this.src) {
-        this.hydrate(this.src);
-      }
-    });
-  }
-
-  override updated(changedProperties: Map<string | number | symbol, unknown>) {
-    super.updated(changedProperties);
-    if (changedProperties.has("src") && this.src) {
-      this.hydrate(this.src);
-    }
-  }
-
-  private hydrate(src: string) {
-    fetch(src, { headers: this.authorization })
-      .then((res) => res.json())
-      .then((json: object) => {
-        if (json) {
-          const data = json as Array<SessionData>;
-          this.sessions = Array.isArray(data) ? data : [];
-        }
-      })
-      .catch((err) => {
-        console.error("Error loading session data:", err);
-      });
   }
 
   private formatDate(dateString: string): string {
@@ -93,13 +34,13 @@ export class SessionListElement extends LitElement {
   override render() {
     const { sessions } = this;
 
-    const renderSession = (session: SessionData, index: number) => {
+    const renderSession = (session: Session, index: number) => {
       const showDateHeader =
         session.date &&
         (index === 0 || sessions[index - 1].date !== session.date);
 
       return html`
-        ${showDateHeader
+        ${showDateHeader && session.date
           ? html`<h2>${this.formatDate(session.date)}</h2>`
           : ""}
         <book-session

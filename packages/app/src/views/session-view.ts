@@ -1,59 +1,37 @@
-import { html, css, LitElement } from "lit";
-import { property, state } from "lit/decorators.js";
-import { Observer, Auth } from "@calpoly/mustang";
+import { View } from "@calpoly/mustang";
+import { html, css } from "lit";
+import { property } from "lit/decorators.js";
+import { Model, Session } from "../model";
+import { Msg } from "../messages";
 
-interface Session {
-  bookName: string;
-  duration: string;
-  pages: string;
-  date?: string;
-  notes?: string;
-}
-
-export class SessionViewElement extends LitElement {
+export class SessionViewElement extends View<Model, Msg> {
   @property({ attribute: "session-id" })
   sessionId?: string;
 
-  @state()
-  private session?: Session;
-
-  _authObserver = new Observer<Auth.Model>(this, "bookstats:auth");
-  _user?: Auth.User;
-
-  get src() {
-    return `/api/sessions/${this.sessionId}`;
+  get session(): Session | undefined {
+    return this.model.currentSession;
   }
 
-  get authorization() {
-    return this._user?.authenticated
-      ? {
-          Authorization: `Bearer ${(this._user as Auth.AuthenticatedUser).token}`,
-        }
-      : undefined;
+  constructor() {
+    super("bookstats:model");
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-    this._authObserver.observe((auth: Auth.Model) => {
-      this._user = auth.user;
-      if (this.sessionId) {
-        this.hydrate(this.src);
-      }
-    });
-    if (this.sessionId) {
-      this.hydrate(this.src);
+  attributeChangedCallback(
+    name: string,
+    oldValue: string,
+    newValue: string
+  ) {
+    super.attributeChangedCallback(name, oldValue, newValue);
+    if (
+      name === "session-id" &&
+      oldValue !== newValue &&
+      newValue
+    ) {
+      this.dispatchMessage([
+        "session/request",
+        { sessionId: newValue }
+      ]);
     }
-  }
-
-  private hydrate(src: string) {
-    fetch(src, { headers: this.authorization })
-      .then((res) => res.json())
-      .then((data: Session) => {
-        this.session = data;
-      })
-      .catch((err) => {
-        console.error("Error loading session data:", err);
-      });
   }
 
   static styles = css`
@@ -94,7 +72,9 @@ export class SessionViewElement extends LitElement {
   `;
 
   render() {
-    if (!this.session) {
+    const { session } = this;
+
+    if (!session) {
       return html`
         <div class="container">
           <p>Loading session details...</p>
@@ -113,29 +93,29 @@ export class SessionViewElement extends LitElement {
             <dl>
               <div>
                 <dt>Book</dt>
-                <dd>${this.session.bookName}</dd>
+                <dd>${session["book-name"] || "Unknown"}</dd>
               </div>
               <div>
                 <dt>Duration</dt>
-                <dd>${this.session.duration}</dd>
+                <dd>${session.duration}</dd>
               </div>
               <div>
                 <dt>Pages Read</dt>
-                <dd>${this.session.pages}</dd>
+                <dd>${session.pages}</dd>
               </div>
-              ${this.session.date
+              ${session.date
                 ? html`
                     <div>
                       <dt>Date</dt>
-                      <dd>${this.session.date}</dd>
+                      <dd>${session.date}</dd>
                     </div>
                   `
                 : ""}
-              ${this.session.notes
+              ${session.notes
                 ? html`
                     <div>
                       <dt>Notes</dt>
-                      <dd>${this.session.notes}</dd>
+                      <dd>${session.notes}</dd>
                     </div>
                   `
                 : ""}

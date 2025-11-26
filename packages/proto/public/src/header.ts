@@ -11,10 +11,6 @@ export class HeaderElement extends LitElement {
   @state()
   userid?: string;
 
-  static initializeOnce() {
-    // Optional initialization hook
-  }
-
   override connectedCallback() {
     super.connectedCallback();
 
@@ -122,7 +118,11 @@ export class HeaderElement extends LitElement {
           </div>
           <div class="nav-links">
             <label
-              onchange="event.stopPropagation(); const isChecked = event.target.type === 'checkbox' ? event.target.checked : false; document.body.dispatchEvent(new CustomEvent('darkmode:toggle', { detail: { checked: isChecked } }));"
+              onchange="event.stopPropagation();
+              const isChecked = event.target.type === 'checkbox' ? event.target.checked : false;
+              document.body.dispatchEvent(new CustomEvent('darkmode:toggle', {
+                 detail: { checked: isChecked }
+                }));"
             >
               <input type="checkbox" autocomplete="off" />
               Dark mode
