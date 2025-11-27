@@ -1,4 +1,4 @@
-import { Auth, ThenUpdate } from "@calpoly/mustang";
+import { Auth } from "@calpoly/mustang";
 import { Msg } from "./messages";
 import { Model, Session } from "./model";
 
@@ -48,14 +48,14 @@ export default function update(
   message: Msg,
   model: Model,
   user: Auth.User
-): Model | ThenUpdate<Model, Msg> {
-  const [command, payload, callbacks] = message;
+): Model | [Model, Promise<Msg>] {
+  const [command, payload] = message;
   switch (command) {
     case "sessions/request": {
       // Return current model with a promise that will trigger sessions/load
       return [
         model,
-        requestSessions(user).then((sessions) => ["sessions/load", { sessions }])
+        requestSessions(user).then((sessions) => ["sessions/load", { sessions }] as Msg)
       ];
     }
     case "sessions/load": {
@@ -76,7 +76,7 @@ export default function update(
       return [
         model,
         requestSession(sessionId, user).then((session) =>
-          ["session/load", { session }]
+          ["session/load", { session }] as Msg
         )
       ];
     }
@@ -88,14 +88,15 @@ export default function update(
       };
     }
     case "session/save": {
+      const { onSuccess, onFailure, ...sessionData } = payload;
       return [
         model,
-        saveSession(payload, user, callbacks || {})
+        saveSession(sessionData, user, { onSuccess, onFailure })
           .then(() => {
             // After saving, refetch all sessions to update the list
             return requestSessions(user);
           })
-          .then((sessions) => ["sessions/load", { sessions }])
+          .then((sessions) => ["sessions/load", { sessions }] as Msg)
       ];
     }
     case "session/delete": {

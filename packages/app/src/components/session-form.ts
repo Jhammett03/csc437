@@ -122,8 +122,8 @@ export class SessionFormElement extends View<Model, Msg> {
 
     this.dispatchMessage([
       "session/save",
-      { session: sessionData as Session },
       {
+        session: sessionData as Session,
         onSuccess: () => {
           this.showForm = false;
           console.log("Session saved successfully");

@@ -5,8 +5,9 @@ export type Msg =
   | ["session/request", { sessionId: string }]
   | [
       "session/save",
-      { sessionId?: string; session: Session },
       {
+        sessionId?: string;
+        session: Session;
         onSuccess?: () => void;
         onFailure?: (err: Error) => void;
       }
