@@ -100,7 +100,7 @@ define({
   "mu-history": History.Provider,
   "mu-store": class AppStore extends Store.Provider<Model, Msg> {
     constructor() {
-      super(update, init, "bookstats:auth")
+      super(update as Store.AuthorizedUpdate<Msg, Model>, init, "bookstats:auth")
     }
   },
   "mu-switch": class AppSwitch extends Switch.Element {
