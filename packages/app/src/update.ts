@@ -1,4 +1,4 @@
-import { Auth, Store } from "@calpoly/mustang";
+import { Auth } from "@calpoly/mustang";
 import { Msg } from "./messages";
 import { Model, Session } from "./model";
 
