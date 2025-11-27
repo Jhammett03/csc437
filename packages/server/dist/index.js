@@ -38,11 +38,21 @@ app.get("/hello", (req, res) => {
   res.send("Hello, World");
 });
 app.use(import_express.default.static(staticDir));
-app.use("/app", (req, res) => {
-  const indexHtml = import_path.default.resolve(staticDir, "index.html");
-  import_promises.default.readFile(indexHtml, { encoding: "utf8" }).then(
-    (html) => res.send(html)
-  );
+async function serveSPA(staticPath, res) {
+  const indexHtml = import_path.default.resolve(staticPath, "index.html");
+  try {
+    const html = await import_promises.default.readFile(indexHtml, { encoding: "utf8" });
+    res.send(html);
+  } catch (error) {
+    console.error(`Error reading index.html from ${indexHtml}:`, error);
+    res.status(500).send(`
+      Build Error
+    `);
+  }
+}
+app.use(["/app", "/login"], async (req, res) => {
+  const staticPath = import_path.default.isAbsolute(staticDir) ? staticDir : import_path.default.resolve(process.cwd(), staticDir);
+  await serveSPA(staticPath, res);
 });
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

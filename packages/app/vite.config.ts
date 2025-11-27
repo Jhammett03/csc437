@@ -6,7 +6,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   root: "public",
-  publicDir: "public-assets",
+  publicDir: ".",
   server: {
     port: 5173,
     proxy: {
@@ -34,8 +34,14 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, "public/index.html"),
       },
+      external: [],
     },
-    outDir: "../dist",
+    outDir: "dist",
     emptyOutDir: true,
+    ssr: false,
+    assetsDir: "assets",
+  },
+  optimizeDeps: {
+    include: ["@calpoly/mustang", "lit"],
   },
 });

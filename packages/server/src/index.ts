@@ -23,12 +23,24 @@ app.get("/hello", (req: Request, res: Response) => {
 
 app.use(express.static(staticDir));
 
-// SPA Routes: /app/...
-app.use("/app", (req: Request, res: Response) => {
-  const indexHtml = path.resolve(staticDir, "index.html");
-  fs.readFile(indexHtml, { encoding: "utf8" }).then((html) =>
-    res.send(html)
-  );
+async function serveSPA(staticPath: string, res: Response) {
+  const indexHtml = path.resolve(staticPath, "index.html");
+  try {
+    const html = await fs.readFile(indexHtml, { encoding: "utf8" });
+    res.send(html);
+  } catch (error) {
+    console.error(`Error reading index.html from ${indexHtml}:`, error);
+    res.status(500).send(`
+      Build errpr
+    `);
+  }
+}
+
+app.use(["/app", "/login"], async (req: Request, res: Response) => {
+  const staticPath = path.isAbsolute(staticDir) 
+    ? staticDir 
+    : path.resolve(process.cwd(), staticDir);
+  await serveSPA(staticPath, res);
 });
 
 app.listen(port, () => {

@@ -5,14 +5,19 @@ import { Msg } from "../messages";
 
 export class HomeViewElement extends View<Model, Msg> {
   get sessions(): Session[] {
-    return this.model.sessions;
+    return this.model?.sessions || [];
   }
 
   get stats() {
+    const stats = this.model?.stats || {
+      totalBooks: 0,
+      hoursRead: 0,
+      currentBook: "-",
+    };
     return {
-      totalBooks: this.model.stats.totalBooks,
-      hoursRead: this.model.stats.hoursRead,
-      currentBook: this.model.stats.currentBook,
+      totalBooks: stats.totalBooks,
+      hoursRead: stats.hoursRead,
+      currentBook: stats.currentBook,
     };
   }
 

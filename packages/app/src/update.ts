@@ -46,15 +46,34 @@ function calculateStats(sessions: Session[]) {
 
 export default function update(
   message: Msg,
-  model: Model,
-  user: Auth.User
+  model: Model | undefined,
+  user: Auth.User | undefined
 ): Model | [Model, Promise<Msg>] {
+  const currentModel: Model = model || {
+    sessions: [],
+    currentSession: undefined,
+    stats: {
+      total: 0,
+      totalDuration: 0,
+      totalPages: 0,
+      avgDuration: 0,
+      avgPages: 0,
+      totalBooks: 0,
+      hoursRead: 0,
+      currentBook: "-",
+    },
+  };
+
+  if (!user) {
+    return currentModel;
+  }
+
   const [command, payload] = message;
   switch (command) {
     case "sessions/request": {
       // Return current model with a promise that will trigger sessions/load
       return [
-        model,
+        currentModel,
         requestSessions(user).then((sessions) => ["sessions/load", { sessions }] as Msg)
       ];
     }
@@ -62,7 +81,7 @@ export default function update(
       const { sessions } = payload;
       const stats = calculateStats(sessions);
       return {
-        ...model,
+        ...currentModel,
         sessions,
         stats,
       };
@@ -70,11 +89,11 @@ export default function update(
     case "session/request": {
       const { sessionId } = payload;
       // Avoid re-fetching if we already have this session
-      if (model.currentSession?._id?.toString() === sessionId) {
-        return model;
+      if (currentModel.currentSession?._id?.toString() === sessionId) {
+        return currentModel;
       }
       return [
-        model,
+        currentModel,
         requestSession(sessionId, user).then((session) =>
           ["session/load", { session }] as Msg
         )
@@ -83,14 +102,14 @@ export default function update(
     case "session/load": {
       const { session } = payload;
       return {
-        ...model,
+        ...currentModel,
         currentSession: session,
       };
     }
     case "session/save": {
       const { onSuccess, onFailure, ...sessionData } = payload;
       return [
-        model,
+        currentModel,
         saveSession(sessionData, user, { onSuccess, onFailure })
           .then(() => {
             // After saving, refetch all sessions to update the list
@@ -101,11 +120,11 @@ export default function update(
     }
     case "session/delete": {
       const { sessionId } = payload;
-      const sessions = model.sessions.filter(
+      const sessions = currentModel.sessions.filter(
         (s: Session) => s._id?.toString() !== sessionId
       );
       const stats = calculateStats(sessions);
-      return { ...model, sessions, stats };
+      return { ...currentModel, sessions, stats };
     }
     default:
       const unhandled: never = command;

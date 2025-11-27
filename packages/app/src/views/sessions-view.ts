@@ -5,12 +5,19 @@ import { Msg } from "../messages";
 
 export class SessionsViewElement extends View<Model, Msg> {
   get stats() {
+    const stats = this.model?.stats || {
+      total: 0,
+      totalDuration: 0,
+      totalPages: 0,
+      avgDuration: 0,
+      avgPages: 0,
+    };
     return {
-      total: this.model.stats.total,
-      totalDuration: this.model.stats.totalDuration,
-      totalPages: this.model.stats.totalPages,
-      avgDuration: this.model.stats.avgDuration,
-      avgPages: this.model.stats.avgPages,
+      total: stats.total,
+      totalDuration: stats.totalDuration,
+      totalPages: stats.totalPages,
+      avgDuration: stats.avgDuration,
+      avgPages: stats.avgPages,
     };
   }
 

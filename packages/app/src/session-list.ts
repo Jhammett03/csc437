@@ -13,7 +13,7 @@ export class SessionListElement extends LitElement {
     super.connectedCallback();
 
     this._storeObserver.observe((model: Model) => {
-      this.sessions = model.sessions;
+      this.sessions = model?.sessions || [];
     });
   }
 
