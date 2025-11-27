@@ -3,6 +3,7 @@ import { SessionData } from "../models/session-data";
 
 const SessionSchema = new Schema<SessionData>(
   {
+    username: { type: String, required: true },
     "img-src": String,
     "img-alt": String,
     "book-href": String,
@@ -17,16 +18,23 @@ const SessionSchema = new Schema<SessionData>(
 
 const SessionModel = model<SessionData>("Session", SessionSchema);
 
-function index(): Promise<SessionData[]> {
+function index(username?: string): Promise<SessionData[]> {
+  if (username) {
+    return SessionModel.find({ username });
+  }
   return SessionModel.find();
 }
 
 //note this is using get on the Mongo ID since there isnt a great gettable attribute for sessions
-function get(id: string): Promise<SessionData> {
+function get(id: string, username?: string): Promise<SessionData> {
   if (!Types.ObjectId.isValid(id)) {
     return Promise.reject("Invalid session ID");
   }
-  return SessionModel.findById(id)
+  const query: any = { _id: id };
+  if (username) {
+    query.username = username;
+  }
+  return SessionModel.findOne(query)
     .then((session) => {
       if (!session) {
         throw `Session ${id} not found`;
@@ -43,11 +51,15 @@ function create(json: SessionData): Promise<SessionData> {
   return s.save();
 }
 
-function update(id: string, session: SessionData): Promise<SessionData> {
+function update(id: string, session: SessionData, username?: string): Promise<SessionData> {
   if (!Types.ObjectId.isValid(id)) {
     return Promise.reject("Invalid session ID");
   }
-  return SessionModel.findByIdAndUpdate(id, session, {
+  const query: any = { _id: id };
+  if (username) {
+    query.username = username;
+  }
+  return SessionModel.findOneAndUpdate(query, session, {
     new: true,
   }).then((updated) => {
     if (!updated) throw `Session ${id} not updated`;
@@ -55,11 +67,15 @@ function update(id: string, session: SessionData): Promise<SessionData> {
   });
 }
 
-function remove(id: string): Promise<void> {
+function remove(id: string, username?: string): Promise<void> {
   if (!Types.ObjectId.isValid(id)) {
     return Promise.reject("Invalid session ID");
   }
-  return SessionModel.findByIdAndDelete(id).then((deleted) => {
+  const query: any = { _id: id };
+  if (username) {
+    query.username = username;
+  }
+  return SessionModel.findOneAndDelete(query).then((deleted) => {
     if (!deleted) throw `Session ${id} not deleted`;
   });
 }

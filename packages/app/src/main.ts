@@ -12,9 +12,11 @@ import { BookViewElement } from "./views/book-view";
 import { AuthorsViewElement } from "./views/authors-view";
 import { AuthorViewElement } from "./views/author-view";
 import { LoginViewElement } from "./views/login-view";
+import { RegisterViewElement } from "./views/register-view";
 import { SessionListElement } from "./session-list";
 import { BookSessionElement } from "./book-session";
 import { LoginFormElement } from "./auth/login-form";
+import { RegisterFormElement } from "./auth/register-form";
 import { SessionFormElement } from "./components/session-form";
 
 const routes = [
@@ -61,6 +63,12 @@ const routes = [
     `
   },
   {
+    path: "/app/register",
+    view: () => html`
+      <register-view></register-view>
+    `
+  },
+  {
     path: "/login",
     view: () => html`
       <login-view></login-view>
@@ -82,10 +90,12 @@ define({
   "authors-view": AuthorsViewElement,
   "author-view": AuthorViewElement,
   "login-view": LoginViewElement,
+  "register-view": RegisterViewElement,
   "session-list": SessionListElement,
   "session-form": SessionFormElement,
   "book-session": BookSessionElement,
   "login-form": LoginFormElement,
+  "register-form": RegisterFormElement,
   "mu-auth": Auth.Provider,
   "mu-history": History.Provider,
   "mu-store": class AppStore extends Store.Provider<Model, Msg> {

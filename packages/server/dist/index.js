@@ -37,9 +37,6 @@ app.use("/api/sessions", import_auth.authenticateUser, import_sessions.default);
 app.get("/hello", (req, res) => {
   res.send("Hello, World");
 });
-app.get("/login", (req, res) => {
-  res.sendFile(import_path.default.resolve(staticDir, "login.html"));
-});
 app.use(import_express.default.static(staticDir));
 app.use("/app", (req, res) => {
   const indexHtml = import_path.default.resolve(staticDir, "index.html");

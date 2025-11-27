@@ -24,6 +24,7 @@ module.exports = __toCommonJS(session_svc_exports);
 var import_mongoose = require("mongoose");
 const SessionSchema = new import_mongoose.Schema(
   {
+    username: { type: String, required: true },
     "img-src": String,
     "img-alt": String,
     "book-href": String,
@@ -36,14 +37,21 @@ const SessionSchema = new import_mongoose.Schema(
   { collection: "SessionStats" }
 );
 const SessionModel = (0, import_mongoose.model)("Session", SessionSchema);
-function index() {
+function index(username) {
+  if (username) {
+    return SessionModel.find({ username });
+  }
   return SessionModel.find();
 }
-function get(id) {
+function get(id, username) {
   if (!import_mongoose.Types.ObjectId.isValid(id)) {
     return Promise.reject("Invalid session ID");
   }
-  return SessionModel.findById(id).then((session) => {
+  const query = { _id: id };
+  if (username) {
+    query.username = username;
+  }
+  return SessionModel.findOne(query).then((session) => {
     if (!session) {
       throw `Session ${id} not found`;
     }
@@ -56,22 +64,30 @@ function create(json) {
   const s = new SessionModel(json);
   return s.save();
 }
-function update(id, session) {
+function update(id, session, username) {
   if (!import_mongoose.Types.ObjectId.isValid(id)) {
     return Promise.reject("Invalid session ID");
   }
-  return SessionModel.findByIdAndUpdate(id, session, {
+  const query = { _id: id };
+  if (username) {
+    query.username = username;
+  }
+  return SessionModel.findOneAndUpdate(query, session, {
     new: true
   }).then((updated) => {
     if (!updated) throw `Session ${id} not updated`;
     else return updated;
   });
 }
-function remove(id) {
+function remove(id, username) {
   if (!import_mongoose.Types.ObjectId.isValid(id)) {
     return Promise.reject("Invalid session ID");
   }
-  return SessionModel.findByIdAndDelete(id).then((deleted) => {
+  const query = { _id: id };
+  if (username) {
+    query.username = username;
+  }
+  return SessionModel.findOneAndDelete(query).then((deleted) => {
     if (!deleted) throw `Session ${id} not deleted`;
   });
 }

@@ -21,11 +21,6 @@ app.get("/hello", (req: Request, res: Response) => {
   res.send("Hello, World");
 });
 
-app.get("/login", (req: Request, res: Response) => {
-  res.sendFile(path.resolve(staticDir, "login.html"));
-});
-
-// Static file serving should be last
 app.use(express.static(staticDir));
 
 // SPA Routes: /app/...

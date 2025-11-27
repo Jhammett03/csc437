@@ -34,24 +34,29 @@ module.exports = __toCommonJS(sessions_exports);
 var import_express = __toESM(require("express"));
 var import_session_svc = __toESM(require("../services/session-svc"));
 const router = import_express.default.Router();
-router.get("/", (_, res) => {
-  import_session_svc.default.index().then((list) => res.json(list)).catch((err) => res.status(500).send(err));
+router.get("/", (req, res) => {
+  const username = req.username;
+  import_session_svc.default.index(username).then((list) => res.json(list)).catch((err) => res.status(500).send(err));
 });
 router.get("/:id", (req, res) => {
   const { id } = req.params;
-  import_session_svc.default.get(id).then((session) => res.json(session)).catch((err) => res.status(404).send(err));
+  const username = req.username;
+  import_session_svc.default.get(id, username).then((session) => res.json(session)).catch((err) => res.status(404).send(err));
 });
 router.post("/", (req, res) => {
-  const newSession = req.body;
+  const username = req.username;
+  const newSession = { ...req.body, username };
   import_session_svc.default.create(newSession).then((session) => res.status(201).json(session)).catch((err) => res.status(500).send(err));
 });
 router.put("/:id", (req, res) => {
   const { id } = req.params;
-  const newSession = req.body;
-  import_session_svc.default.update(id, newSession).then((session) => res.json(session)).catch((err) => res.status(404).end());
+  const username = req.username;
+  const newSession = { ...req.body, username };
+  import_session_svc.default.update(id, newSession, username).then((session) => res.json(session)).catch((err) => res.status(404).end());
 });
 router.delete("/:id", (req, res) => {
   const { id } = req.params;
-  import_session_svc.default.remove(id).then(() => res.status(204).end()).catch((err) => res.status(404).send(err));
+  const username = req.username;
+  import_session_svc.default.remove(id, username).then(() => res.status(204).end()).catch((err) => res.status(404).send(err));
 });
 var sessions_default = router;
