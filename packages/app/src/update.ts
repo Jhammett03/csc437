@@ -49,7 +49,8 @@ export default function update(
   model: Model,
   user: Auth.User
 ): Model | ThenUpdate<Model, Msg> {
-  switch (message[0]) {
+  const [command, payload, callbacks] = message;
+  switch (command) {
     case "sessions/request": {
       // Return current model with a promise that will trigger sessions/load
       return [
@@ -58,7 +59,7 @@ export default function update(
       ];
     }
     case "sessions/load": {
-      const { sessions } = message[1];
+      const { sessions } = payload;
       const stats = calculateStats(sessions);
       return {
         ...model,
@@ -67,7 +68,7 @@ export default function update(
       };
     }
     case "session/request": {
-      const { sessionId } = message[1];
+      const { sessionId } = payload;
       // Avoid re-fetching if we already have this session
       if (model.currentSession?._id?.toString() === sessionId) {
         return model;
@@ -80,20 +81,25 @@ export default function update(
       ];
     }
     case "session/load": {
-      const { session } = message[1];
+      const { session } = payload;
       return {
         ...model,
         currentSession: session,
       };
     }
-    case "session/add": {
-      const { session } = message[1];
-      const sessions = [session, ...model.sessions];
-      const stats = calculateStats(sessions);
-      return { ...model, sessions, stats };
+    case "session/save": {
+      return [
+        model,
+        saveSession(payload, user, callbacks || {})
+          .then(() => {
+            // After saving, refetch all sessions to update the list
+            return requestSessions(user);
+          })
+          .then((sessions) => ["sessions/load", { sessions }])
+      ];
     }
     case "session/delete": {
-      const { sessionId } = message[1];
+      const { sessionId } = payload;
       const sessions = model.sessions.filter(
         (s: Session) => s._id?.toString() !== sessionId
       );
@@ -101,7 +107,7 @@ export default function update(
       return { ...model, sessions, stats };
     }
     default:
-      const unhandled: never = message[0];
+      const unhandled: never = command;
       throw new Error(`Unhandled message: ${unhandled}`);
   }
 }
@@ -131,5 +137,50 @@ function requestSession(sessionId: string, user: Auth.User) {
     .then((json: unknown) => {
       if (json) return json as Session;
       throw new Error("No JSON in response from server");
+    });
+}
+
+function saveSession(
+  msg: {
+    sessionId?: string;
+    session: Session;
+  },
+  user: Auth.User,
+  callbacks: {
+    onSuccess?: () => void;
+    onFailure?: (err: Error) => void;
+  }
+): Promise<Session> {
+  const method = msg.sessionId ? "PUT" : "POST";
+  const url = msg.sessionId
+    ? `/api/sessions/${msg.sessionId}`
+    : "/api/sessions";
+
+  return fetch(url, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      ...Auth.headers(user)
+    },
+    body: JSON.stringify(msg.session)
+  })
+    .then((response: Response) => {
+      if (response.status === 200 || response.status === 201) {
+        return response.json();
+      }
+      throw new Error(
+        `Failed to save session: ${response.statusText}`
+      );
+    })
+    .then((json: unknown) => {
+      if (json) {
+        if (callbacks.onSuccess) callbacks.onSuccess();
+        return json as Session;
+      }
+      throw new Error("No JSON in API response");
+    })
+    .catch((err) => {
+      if (callbacks.onFailure) callbacks.onFailure(err);
+      throw err;
     });
 }

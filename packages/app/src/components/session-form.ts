@@ -1,33 +1,22 @@
-import { html, css, LitElement } from "lit";
+import { View, Form, define } from "@calpoly/mustang";
+import { html, css } from "lit";
 import { state } from "lit/decorators.js";
-import { Observer, Auth } from "@calpoly/mustang";
+import { Model, Session } from "../model";
+import { Msg } from "../messages";
 
-export class SessionFormElement extends LitElement {
+export class SessionFormElement extends View<Model, Msg> {
+  static uses = define({
+    "mu-form": Form.Element,
+  });
+
   @state()
   private showForm = false;
 
-  _authObserver = new Observer<Auth.Model>(this, "bookstats:auth");
-  _user?: Auth.User;
-
-  get authorization() {
-    return this._user?.authenticated
-      ? {
-          Authorization: `Bearer ${(this._user as Auth.AuthenticatedUser).token}`,
-        }
-      : undefined;
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this._authObserver.observe((auth: Auth.Model) => {
-      this._user = auth.user;
-    });
+  constructor() {
+    super("bookstats:model");
   }
 
   static styles = css`
-    :host {
-      display: block;
-    }
     .add-button {
       background: var(--color-primary);
       color: var(--text-inv);
@@ -56,18 +45,18 @@ export class SessionFormElement extends LitElement {
       margin: 0 0 var(--space-4);
       font-family: var(--font-sans);
     }
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-3);
-    }
+
     label {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-1);
+      display: flex !important;
+      flex-direction: column !important;
+      gap: var(--space-1) !important;
       color: var(--text-1);
       font-weight: 500;
+      grid-column: 1 !important;
+      grid-template-columns: none !important;
+      width: 100%;
     }
+      
     input,
     textarea {
       padding: var(--space-2);
@@ -77,35 +66,30 @@ export class SessionFormElement extends LitElement {
       font-family: var(--font-body);
       background: var(--surface-1);
       color: var(--text-1);
+      width: 100%;
+      box-sizing: border-box;
     }
+
     input:focus,
     textarea:focus {
       outline: none;
       border-color: var(--color-primary);
       box-shadow: 0 0 0 3px var(--focus);
     }
+
     textarea {
-      min-height: 80px;
+      min-height: 100px;
       resize: vertical;
+      font-family: var(--font-body);
     }
+
     .button-group {
       display: flex;
       gap: var(--space-2);
-      margin-top: var(--space-2);
+      margin-top: var(--space-4);
+      width: 100%;
     }
-    button[type="submit"] {
-      background: var(--color-primary);
-      color: var(--text-inv);
-      border: none;
-      padding: var(--space-2) var(--space-4);
-      border-radius: var(--radius-s);
-      font-size: var(--size-2);
-      font-weight: 600;
-      cursor: pointer;
-    }
-    button[type="submit"]:hover {
-      background: var(--color-primary-600);
-    }
+
     button[type="button"] {
       background: var(--surface-3);
       color: var(--text-1);
@@ -115,53 +99,42 @@ export class SessionFormElement extends LitElement {
       font-size: var(--size-2);
       cursor: pointer;
     }
+
     button[type="button"]:hover {
       background: var(--line);
     }
   `;
 
-  private handleSubmit(e: Event) {
-    e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
+  handleSubmit = (event: Form.SubmitEvent<Record<string, string>>) => {
+    const formData = event.detail;
 
+    // Transform form data to match original format
     const sessionData = {
-      "book-name": formData.get("bookName"),
-      bookName: formData.get("bookName"),
-      duration: formData.get("duration"),
-      pages: formData.get("pages"),
-      notes: formData.get("notes"),
+      "book-name": formData["book-name"],
+      duration: formData.duration,
+      pages: formData.pages,
+      notes: formData.notes || "",
       date: new Date().toLocaleDateString(),
       "img-src": "/crimeandpunishment.jpg",
-      "img-alt": formData.get("bookName") + " cover",
+      "img-alt": formData["book-name"] + " cover",
       "book-href": "/app/books/1",
     };
 
-    fetch("/api/sessions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...this.authorization,
-      },
-      body: JSON.stringify(sessionData),
-    })
-      .then((res) => res.json())
-      .then(() => {
-        this.showForm = false;
-        form.reset();
-        // Dispatch event to notify parent to refresh
-        this.dispatchEvent(
-          new CustomEvent("session-added", {
-            bubbles: true,
-            composed: true,
-          })
-        );
-      })
-      .catch((err) => {
-        console.error("Error adding session:", err);
-        alert("Failed to add session. Please try again.");
-      });
-  }
+    this.dispatchMessage([
+      "session/save",
+      { session: sessionData as Session },
+      {
+        onSuccess: () => {
+          this.showForm = false;
+          console.log("Session saved successfully");
+        },
+        onFailure: (error: Error) => {
+          console.error("Error saving session:", error);
+          alert("Failed to save session. Please try again.");
+        }
+      }
+    ]);
+  };
 
   render() {
     return html`
@@ -178,57 +151,52 @@ export class SessionFormElement extends LitElement {
           : html`
               <div class="form-container">
                 <h3>Add Reading Session</h3>
-                <form @submit=${this.handleSubmit}>
+                <mu-form @mu-form:submit=${this.handleSubmit}>
                   <label>
                     <span>Book Name</span>
                     <input
                       type="text"
-                      name="bookName"
+                      name="book-name"
                       required
-                      placeholder="Crime and Punishment"
+                      autocomplete="off"
                     />
                   </label>
-
                   <label>
                     <span>Duration (minutes)</span>
                     <input
-                      type="number"
+                      type="text"
                       name="duration"
                       required
-                      min="1"
-                      placeholder="45"
+                      autocomplete="off"
                     />
                   </label>
-
                   <label>
                     <span>Pages Read</span>
                     <input
-                      type="number"
+                      type="text"
                       name="pages"
                       required
-                      min="1"
-                      placeholder="20"
+                      autocomplete="off"
                     />
                   </label>
-
                   <label>
                     <span>Notes (optional)</span>
                     <textarea
                       name="notes"
+                      autocomplete="off"
                       placeholder="Add your thoughts about this session..."
                     ></textarea>
                   </label>
-
-                  <div class="button-group">
-                    <button type="submit">Add Session</button>
-                    <button
-                      type="button"
-                      @click=${() => (this.showForm = false)}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </form>
+                
+                </mu-form>
+                <div class="button-group">
+                  <button
+                    type="button"
+                    @click=${() => (this.showForm = false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
             `}
       </div>

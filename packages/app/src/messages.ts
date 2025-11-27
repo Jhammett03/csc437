@@ -3,7 +3,14 @@ import { Session } from "./model";
 export type Msg =
   | ["sessions/request", {}]
   | ["session/request", { sessionId: string }]
-  | ["session/add", { session: Session }]
+  | [
+      "session/save",
+      { sessionId?: string; session: Session },
+      {
+        onSuccess?: () => void;
+        onFailure?: (err: Error) => void;
+      }
+    ]
   | ["session/delete", { sessionId: string }]
   | Cmd;
 
